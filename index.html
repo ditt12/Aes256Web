@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Enkripsi Script</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Enkripsi Script JavaScript</h1>
+        <textarea id="inputScript" placeholder="Masukkan script di sini..."></textarea>
+        <input type="text" id="inputKey" placeholder="Masukkan kunci enkripsi..." />
+        <button id="encryptBtn">Enkripsi</button>
+        <h2>Hasil Enkripsi:</h2>
+        <textarea id="outputScript" readonly></textarea>
+
+        <div class="alert alert-success" id="successMessage" style="display: none;">
+            Script berhasil dienkripsi!
+        </div>
+        <div class="alert alert-error" id="errorMessage" style="display: none;">
+            Terjadi kesalahan saat melakukan enkripsi.
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Enkripsi Script. Semua hak dilindungi.</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#encryptBtn').click(function() {
+                const script = $('#inputScript').val();
+                const key = $('#inputKey').val();
+                $.post('/encrypt', { script: script, key: key })
+                    .done(function(data) {
+                        $('#outputScript').val(data.encrypted);
+                        $('#successMessage').show().delay(3000).fadeOut();
+                        $('#errorMessage').hide();
+                    })
+                    .fail(function() {
+                        $('#errorMessage').show().delay(3000).fadeOut();
+                        $('#successMessage').hide();
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
